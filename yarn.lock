@@ -364,6 +364,11 @@ type-is@~1.6.16:
     media-typer "0.3.0"
     mime-types "~2.1.24"
 
+unique-names-generator@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/unique-names-generator/-/unique-names-generator-4.3.1.tgz#f61ec2290b2f865894af01afb40f3e1043bb8fa2"
+  integrity sha512-oxkKrDXbwx6I5M963SdfmMH2t8n1OIfYyzoJ25BmDeETlyWAZjTbMXwIEMiQDex4lkD2pqe+9gxDJQAB2IOfDg==
+
 unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/unpipe/-/unpipe-1.0.0.tgz#b2bf4ee8514aae6165b4817829d21b2ef49904ec"
