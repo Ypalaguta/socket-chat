@@ -1,11 +1,11 @@
 const ChatActionTypes = {
-    NEW_JOIN: '',
-    NEW_MESSAGE: '',
-    NEW_LEAVE: '',
+    NEW_JOIN: 'NEW_JOIN',
+    NEW_MESSAGE: 'NEW_MESSAGE',
+    NEW_LEAVE: 'NEW_LEAVE',
 
-    LOADING_USERS_START: '',
-    LOADING_USERS_SUCCESS: '',
-    LOADING_USERS_FAILURE: '',
+    GET_USER_START: 'GET_USER_START',
+    GET_USER_SUCCESS: 'GET_USER_SUCCESS',
+    GET_USER_FAILURE: 'GET_USER_FAILURE',
 };
 
 export default ChatActionTypes;

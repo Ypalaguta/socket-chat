@@ -11,7 +11,7 @@ router.post('/login', function (req, res, next) {
             length: 2
         });
     }
-    res.json({name: currentName, id: ++global.lastId}).end();
+    res.json({nickname: currentName, userId: ++global.lastId}).end();
 });
 
 module.exports = router;

@@ -8,7 +8,7 @@ import AppWrap from "./components/app-wrap/app-wrap.component";
 import {selectCurrentUser} from "./redux/chat/chat.selectors";
 
 function App() {
-    const currentUser = !useSelector(selectCurrentUser);
+    const currentUser = useSelector(selectCurrentUser);
     return (
         <AppWrap>
             <Switch>

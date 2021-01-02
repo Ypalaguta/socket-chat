@@ -31,24 +31,25 @@ server.on('listening', onListening);
 
 
 const io = require('socket.io')(server);
+
 /**
  * Normalize a port into a number, string, or false.
  */
 
 function normalizePort(val) {
-  const port = parseInt(val, 10);
+    const port = parseInt(val, 10);
 
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
 
-  if (port >= 0) {
-    // port number
-    return port;
-  }
+    if (port >= 0) {
+        // port number
+        return port;
+    }
 
-  return false;
+    return false;
 }
 
 /**
@@ -56,27 +57,27 @@ function normalizePort(val) {
  */
 
 function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
 
-  const bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+    const bind = typeof port === 'string'
+        ? 'Pipe ' + port
+        : 'Port ' + port;
 
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
 }
 
 /**
@@ -84,51 +85,68 @@ function onError(error) {
  */
 
 function onListening() {
-  const addr = server.address();
-  const bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+    const addr = server.address();
+    const bind = typeof addr === 'string'
+        ? 'pipe ' + addr
+        : 'port ' + addr.port;
+    debug('Listening on ' + bind);
 }
 
 
-
 io.on('connection', (socket) => {
-  let addedUser = false;
+    let addedUser = false;
 
-  // when the client emits 'new message', this listens and executes
-  socket.on('NEW_MESSAGE', (data) => {
-    // we tell the client to execute 'new message'
-    socket.broadcast.emit('NEW_MESSAGE', {
-      message: {userId: socket.userId, message: data, type: 'regular'}
+    // when the client emits 'new message', this listens and executes
+    socket.on('NEW_MESSAGE', (data) => {
+        console.log('NEW_MESSAGE')
+        console.log(data)
+        // we tell the client to execute 'new message'
+        socket.broadcast.emit('NEW_MESSAGE', {
+            message: {userId: socket.user.userId, nickname: socket.user.nickname, text: data, type: 'regular'}
+        });
+        socket.emit('NEW_MESSAGE', {
+            message: {userId: socket.user.userId, nickname: socket.user.nickname, text: data, type: 'regular'}
+        });
     });
-  });
 
-  // when the client emits 'NEW_JOIN', this listens and executes
-  socket.on('NEW_JOIN', (user) => {
-    if (addedUser) return;
+    // when the client emits 'NEW_JOIN', this listens and executes
+    socket.on('NEW_JOIN', (data) => {
+        console.log('NEW_JOIN')
+        console.log(data.user)
 
-    // we store the user in the socket session for this client
-    socket.user = user;
-    users.push(user);
-    addedUser = true;
-    // echo globally (all clients) that a person has connected
-    socket.broadcast.emit('NEW_JOIN', {
-      user: socket.user,
-      users: users
+        if (addedUser) return;
+
+        // we store the user in the socket session for this client
+        socket.user = data.user;
+        users.push(data.user);
+        addedUser = true;
+        // echo globally (all clients) that a person has connected
+        socket.broadcast.emit('NEW_JOIN', {
+            user: data.user,
+            users: users
+        });
+        socket.emit('NEW_JOIN', {
+            user: data.user,
+            users: users
+        });
+        console.log('-----------------------------------------')
+
     });
-  });
 
-  // when the user disconnects.. perform this
-  socket.on('NEW_LEAVE', () => {
-    if (addedUser) {
-      users = users.filter(user=>user.userId!==socket.user.userId);
+    // when the user disconnects.. perform this
+    socket.on('disconnect', () => {
+        console.log('disconnect', socket.user)
+        global.users = users.filter(user => user.userId !== socket.user.userId);
 
-      // echo globally that this client has left
-      socket.broadcast.emit('NEW_LEAVE', {
-        user: socket.user,
-        users: users
-      });
-    }
-  });
+        // echo globally that this client has left
+        socket.broadcast.emit('NEW_LEAVE', {
+            user: socket.user,
+            users: users
+        });
+        socket.emit('NEW_LEAVE', {
+            user: socket.user,
+            users: users
+        });
+        console.log('-----------------------------------------')
+    });
 });

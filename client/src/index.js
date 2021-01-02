@@ -6,12 +6,13 @@ import reportWebVitals from './reportWebVitals';
 
 import {Provider} from 'react-redux';
 import {store} from './redux/store'
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter, Router} from 'react-router-dom';
+import history from "./history";
 
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-            <BrowserRouter>
+            <BrowserRouter history={history}>
                 <App/>
             </BrowserRouter>
         </Provider>
