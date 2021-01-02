@@ -94,7 +94,6 @@ function onListening() {
 
 
 io.on('connection', (socket) => {
-    let addedUser = false;
 
     // when the client emits 'new message', this listens and executes
     socket.on('NEW_MESSAGE', (data) => {
@@ -114,12 +113,9 @@ io.on('connection', (socket) => {
         console.log('NEW_JOIN')
         console.log(data.user)
 
-        if (addedUser) return;
-
         // we store the user in the socket session for this client
         socket.user = data.user;
         users.push(data.user);
-        addedUser = true;
         // echo globally (all clients) that a person has connected
         socket.broadcast.emit('NEW_JOIN', {
             user: data.user,
