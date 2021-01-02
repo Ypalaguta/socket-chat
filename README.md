@@ -12,7 +12,7 @@ there are 2 ways to run project:
 (runs react on webpack dev server and node on another instance)
 ### `yarn run dev`
 #####separately:
-### `yarn server` root folder
+### `yarn run server` root folder
 ### `yarn start` client folder
 
 ####build version 

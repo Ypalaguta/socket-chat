@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
-    ChatContainer,
+    ChatContainer, ChatScrollWrapper,
     ChatWindowContainer,
     InputContainer,
     MessageContainer,
@@ -36,7 +36,7 @@ export default function Chat() {
     const [inputValue, setInputValue] = useState('');
     const handleInput = event => setInputValue(event.target.value);
     const handleKeyPress = event => {
-        if(event.charCode===13) {
+        if (event.charCode === 13) {
             sendMessage(inputValue);
             setInputValue('');
         }
@@ -44,15 +44,18 @@ export default function Chat() {
     return (
         <ChatContainer>
             <ChatWindowContainer>
-                {messages.map(message => <MessageContainer>
-                    {message.type === 'regular' ? <span>{message.nickname}: </span> : null}
-                    {message.type === 'regular' ? <span>{message.text}</span> :
-                        <div style={{textAlign: 'center'}}>{message.text}</div>}
+                <ChatScrollWrapper>
+                    {messages.map(message => <MessageContainer>
+                        {message.type === 'regular' ? <span>{message.nickname}: </span> : null}
+                        {message.type === 'regular' ? <span>{message.text}</span> :
+                            <div style={{textAlign: 'center'}}>{message.text}</div>}
 
-                </MessageContainer>)}
+                    </MessageContainer>)}
+                </ChatScrollWrapper>
+
                 <InputContainer>
                     <StyledInput type='text' placeholder='message text, press enter to send'
-                    onInput = {handleInput} value={inputValue} onKeyPress={handleKeyPress}/>
+                                 onInput={handleInput} value={inputValue} onKeyPress={handleKeyPress}/>
                 </InputContainer>
             </ChatWindowContainer>
             <UsersListContainer>

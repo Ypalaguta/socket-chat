@@ -8,6 +8,7 @@ export const ChatContainer = styled.div`
 export const ChatWindowContainer = styled.div`
     flex:6;
     position: relative;
+    padding-bottom: 30px;
 `;
 export const MessageContainer = styled.div`
     padding: 3px;
@@ -37,4 +38,10 @@ export const StyledInput = styled.input`
 export const UsersListContainer = styled.div`
     flex:2;
     border-left: 1px solid;
+    height: 100%;
+    overflow: auto;
+`;
+export const ChatScrollWrapper = styled.div`
+    overflow: auto;
+    height: 100%;
 `;
