@@ -29,6 +29,8 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
+
+const io = require('socket.io')(server);
 /**
  * Normalize a port into a number, string, or false.
  */
@@ -88,3 +90,45 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+
+
+io.on('connection', (socket) => {
+  let addedUser = false;
+
+  // when the client emits 'new message', this listens and executes
+  socket.on('NEW_MESSAGE', (data) => {
+    // we tell the client to execute 'new message'
+    socket.broadcast.emit('NEW_MESSAGE', {
+      message: {userId: socket.userId, message: data, type: 'regular'}
+    });
+  });
+
+  // when the client emits 'NEW_JOIN', this listens and executes
+  socket.on('NEW_JOIN', (user) => {
+    if (addedUser) return;
+
+    // we store the user in the socket session for this client
+    socket.user = user;
+    users.push(user);
+    addedUser = true;
+    // echo globally (all clients) that a person has connected
+    socket.broadcast.emit('NEW_JOIN', {
+      user: socket.user,
+      users: users
+    });
+  });
+
+  // when the user disconnects.. perform this
+  socket.on('NEW_LEAVE', () => {
+    if (addedUser) {
+      users = users.filter(user=>user.userId!==socket.user.userId);
+
+      // echo globally that this client has left
+      socket.broadcast.emit('NEW_LEAVE', {
+        user: socket.user,
+        users: users
+      });
+    }
+  });
+});

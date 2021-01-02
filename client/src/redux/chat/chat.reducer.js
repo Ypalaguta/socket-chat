@@ -36,24 +36,24 @@ const chatReducer = (store = INITIAL_STORE, action) => {
                 users: store.users.filter(user => user.userId !== action.payload.user.userId),
                 error: null
             };
-        case ChatActionTypes.LOADING_USERS_START:  //add message to messages array
-            return {
-                ...store,
-                loadingUsers: true,
-                error: null
-            };
-        case ChatActionTypes.LOADING_USERS_SUCCESS:  //add message to messages array
-            return {
-                ...store,
-                loadingUsers: false,
-                error: null
-            };
-        case ChatActionTypes.LOADING_USERS_FAILURE:  //add message to messages array
-            return {
-                ...store,
-                loadingUsers: false,
-                error: 'loading users failed'
-            };
+        // case ChatActionTypes.LOADING_USERS_START:  //add message to messages array
+        //     return {
+        //         ...store,
+        //         loadingUsers: true,
+        //         error: null
+        //     };
+        // case ChatActionTypes.LOADING_USERS_SUCCESS:  //add message to messages array
+        //     return {
+        //         ...store,
+        //         loadingUsers: false,
+        //         error: null
+        //     };
+        // case ChatActionTypes.LOADING_USERS_FAILURE:  //add message to messages array
+        //     return {
+        //         ...store,
+        //         loadingUsers: false,
+        //         error: 'loading users failed'
+        //     };
 
         default:
             return store;
